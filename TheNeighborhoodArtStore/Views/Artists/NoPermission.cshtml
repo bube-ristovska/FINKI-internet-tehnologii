@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "NoPermission";
+}
+
+
+<style>
+    div.container.body-content {
+        margin: 0px;
+    }
+    div.center {
+        width: 100px;
+        height: 100px;
+        background-color: orangered;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+    }
+</style>
+
+<div class="center">
+
+    <h2>Out of the box</h2>
+    <p>You have no permitions to edit</p>
+    <div>
+        @Html.ActionLink("Back to safety", "Index", null, new { @class = "btn btn-dark" })
+    </div>
+
+
+</div>

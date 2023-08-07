@@ -1,0 +1,194 @@
+﻿@model IEnumerable<TheNeighborhoodArtStore.Models.Product>
+
+@{
+    ViewBag.Title = "AddToCart";
+}
+<style>
+    #checkoutTable {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #checkoutTable td, #checkoutTable th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #checkoutTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #checkoutTable tr:hover {
+            background-color: #ddd;
+        }
+
+        #checkoutTable th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+    #checkoutTable_filter > label > input[type=search] {
+        background: #fff;
+        height: 30px;
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.8s;
+        box-shadow: 4px 4px 6px 0 rgba(255,255,255,.3), -4px -4px 6px 0 rgba(116, 125, 136, .2), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+    }
+
+    #checkoutTable_filter > label {
+    }
+
+    td {
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    #checkoutTable_wrapper {
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+
+    #checkoutTable {
+        margin-top: 10px;
+    }
+
+    body > div > a {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 10px;
+    }
+
+    body > div > img {
+        margin-left: 410px;
+        width: 583px;
+        display: inline-block;
+    }
+
+    a.kice {
+        margin-left: -913px;
+    }
+</style>
+@if (User.IsInRole("Client"))
+{
+
+    <br />
+    <h2>Shopping cart</h2>
+
+    double priceFinal = 0.0;
+    if (Model == null)
+    {
+        <h1>Your shopping cart is empty</h1>
+        <br />
+        <p>
+            But it dosn't have to be.
+        </p>
+        <img src="/Images/garden.png" />
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-dark kice" })
+    }
+    else
+    {
+
+        <table class="table" id="checkoutTable">
+            <thead>
+                <tr>
+                    <th>
+                        Name of product
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Color
+                    </th>
+                    <th>
+                        Price
+                    </th>
+                </tr>
+
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ToList())
+                {
+                    <tr>
+                        <td>
+                            @item.ProductName
+                        </td>
+                        <td>
+                            @item.Description
+                        </td>
+                        <td>
+                            <img src="@item.Image" style="max-width:300px" />
+                        </td>
+                        <td>
+                            @item.Color
+                        </td>
+                        <td>
+                            @item.Price
+                        </td>
+                    </tr>
+                    priceFinal += item.Price;
+                }
+            </tbody>
+        </table>
+
+        <h2>The final price is @priceFinal</h2>
+
+        <input type="button" value="Clear cart" class="btn btn-light js-clear" />
+        @Html.ActionLink("Checkout", "Checkout", new { @class = "btn btn-dark buttonz" })
+
+
+    }
+
+}
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#checkoutTable").DataTable();
+            console.log("Datatable is done");
+            $(".js-clear").on("click", function () {
+                var button = $(this); //zemi go kopceto
+                console.log("Button taken is done");
+                bootbox.confirm("Do you want clear the cart", function (result) {
+                    console.log("Bootbox triggered");
+                    if (result == true) {
+                        $.ajax({
+                            url: "/Products/Clear",
+                            method: "POST",
+                            success: function (response) {
+                                console.log("success");
+                                window.location.href = "/Products/GetToCart";
+                            },
+                            error: function (err) { //za debug ni treba
+                                console.log(err);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+}

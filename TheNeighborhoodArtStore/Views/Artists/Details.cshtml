@@ -1,0 +1,160 @@
+﻿@model TheNeighborhoodArtStore.Models.Artist
+
+@{
+    ViewBag.Title = "Details";
+}
+<style>
+   
+    .btn{
+        color:black;
+    }
+    .hovimg {
+        width: 200px;
+        text-align: center;
+        margin-top: 30px;
+    }
+    /*hover na sliki*/
+        .hovimg:hover {
+            transform: scale(1.2);
+            z-index: 2;
+        }
+    /*hover na button*/
+    .buttonph:hover {
+        opacity: 0.5;
+    }
+    body > div > div.left > div.bio > p {
+        padding-left: 56px;
+    }
+
+    .card {
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        margin-top: 50px;
+    }
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+    div.left {
+        color: #000;
+        width: 48%;
+        float: left;
+        padding:30px;
+    }
+    div.right {
+        height: 918px;
+        width: 380px;
+        float: right;
+        padding: 30px;
+        margin-top: -30px;
+        background-color: #efefef;
+    }
+    .flex-container {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        flex-direction: column;
+    }
+    body > div > div.left > div.pictureArtist > img 
+    {
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+    }
+    div.name {
+        width: 200px;
+        height: 200px;
+        font-size: 24px;
+        background-color: #F1E3B6;
+        padding: 20px;
+        text-align: center;
+        margin-left: 40px;
+    }
+    div.bio {
+        width: 400px;
+        height: 300px;
+        background-color: #FFE79B;
+        padding: 20px;
+        text-align: center;
+        margin-left: 243px;
+        padding: 7px;
+    }
+    div.Email {
+        width: 260px;
+        height: 270px;
+        background-color: #E8CD75;
+        padding: 20px;
+        text-align: center;
+        display: inline-block;
+        margin-top: -150px;
+    }
+    body > div > div.left > div.pictureArtist > img {
+        margin-top: -780px;
+    }
+    body > div > div.left > div.Email > h2 {
+        margin-top: 127px;
+    }
+    body > div > div.left > div.pictureArtist > img {
+        margin-top: -688px;
+        margin-left: -30px;
+    }
+    p {
+        margin-top: 30px;
+    }
+    body > div > p > a {
+        margin-left: 399px;
+    }
+</style>
+
+<div class="left">
+    <div class="name">
+        <h2>
+            Hi, I'm @Html.DisplayFor(model => model.Name)
+        </h2>
+    </div>
+    <div class="bio">
+        <h2>Biography</h2>
+        <p>
+            @Html.DisplayFor(model => model.Description)
+        </p>
+    </div>
+    <div class="Email">
+        <h2>Contact email</h2>
+        <p>
+            @Html.DisplayFor(model => model.Email)
+        </p>
+    </div>
+    <div class="pictureArtist">
+        <img src="@Model.UrlImage"/>
+    </div>
+</div>
+
+<div class="right">
+    <div class="pics flex-container">
+        @if (Model.Products.ToList().Count() == 0)
+        {
+            <h3>No art from this artist</h3>
+        }
+        @foreach (var prod in Model.Products)
+        {
+            <p>@prod.ProductName</p>
+            <img src="@prod.Image"class="hovimg" />
+
+        }
+    </div>
+</div>
+
+<p>
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-outline-light" })
+</p>
+
+
+
+
+@section scripts{
+    <script>
+        $(document).ready(function () { $(".hovimg").click(function () { this.requestFullscreen() }) });
+    </script>
+
+}

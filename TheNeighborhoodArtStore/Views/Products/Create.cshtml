@@ -1,0 +1,99 @@
+﻿@model TheNeighborhoodArtStore.Models.Product
+
+@{
+    ViewBag.Title = "Create";
+}
+<style>
+    body {
+        background-image: url("/Images/create-bg.png");
+    }
+    input[type=text] {
+        appearance: none;
+        border: none;
+        outline: none;
+        border-bottom: .2em solid #FFE79B;
+        background-color: rgba(255, 255, 204,0.3);
+        border-radius: .2em .2em 0 0;
+        padding: .4em;
+        color: black;
+    }
+    .card {
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 5px 9px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+        padding:50px;
+        margin: 30px;
+        width:600px;
+    }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 38px 36px 0 rgba(0,0,0,0.2);
+        }
+</style>
+<div class="card">
+    <h2>Add new product</h2>
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        Name of product
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        Image of product
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Color, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-outline-success" />
+        </div>
+    </div>
+</div>
+    }
+    <br />
+    <div>
+        @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-light" })
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,265 @@
+﻿@model IEnumerable<TheNeighborhoodArtStore.Models.Product>
+
+@{
+    ViewBag.Title = "Index";
+}
+<style>
+    div.container.body-content {
+        margin: 0px;
+    }
+
+    div.discover {
+        background-image: url("/Images/discover.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 800px;
+        width: 1911px;
+        position: relative;
+        background-position: center;
+        margin-left: -20px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    body > div > div > div h2 {
+        margin-top: 130px;
+        display: inline-block;
+    }
+
+    body > div > div > div p {
+        margin-top: 170px;
+    }
+
+    .kopce {
+        font-size: 20px;
+    }
+
+    #productsTable {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        #productsTable td, #productsTable th {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+
+        #productsTable tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        #productsTable tr:hover {
+            background-color: #ddd;
+        }
+
+        #productsTable th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #04AA6D;
+            color: white;
+        }
+
+    #productsTable_filter > label > input[type=search] {
+        background: #fff;
+        height: 30px;
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        transition: 0.8s;
+        box-shadow: 4px 4px 6px 0 rgba(255,255,255,.3), -4px -4px 6px 0 rgba(116, 125, 136, .2), inset -4px -4px 6px 0 rgba(255,255,255,.2), inset 4px 4px 6px 0 rgba(0, 0, 0, .2);
+    }
+
+    #productsTable_filter > label {
+    }
+
+    td {
+        text-align: center;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    #productsTable_wrapper {
+        margin-left: 148px;
+        margin-right: -382px;
+        margin-top: 50px;
+        margin-bottom: 30px;
+    }
+
+    #productsTable {
+        margin-top: 10px;
+    }
+
+    .hovimg {
+        transition: transform .2s;
+        width: 200px;
+        margin: 0 auto;
+        background-color: rgb(173, 173, 237);
+        border-radius: 3px;
+    }
+
+        .hovimg:hover {
+            transform: scale(2.5);
+        }
+    a.iminja {
+    
+        color:black;
+    }
+</style>
+<div class="discover">
+    @if (User.IsInRole("Artist"))
+    {
+        <div>
+            <h2>Get inspired by other artists or create your own artpiece</h2>
+            <p>
+                @Html.ActionLink("Create New Product", "Create", null, new { @class = "btn btn-light kopce" })
+            </p>
+            <h4 style="color:white; margin-top:-5px;">or scroll to see products</h4>
+
+        </div>
+    }
+    @if (User.IsInRole("Client"))
+    {
+        <div>
+            <h2>Scroll and discover the best products for your home</h2>
+        </div>
+    }
+</div>
+
+
+
+<table class="table center" id="productsTable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Image)
+            </th>
+            <th>
+                Artist name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Color)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    <img src="@item.Image" style="max-width:200px" class="hovimg" />
+
+                </td>
+                <td>
+                    <a href="/Artists/Details/@item.Artist.Id" class="iminja">@Html.DisplayFor(modelItem => item.Artist.Name)</a>
+                   
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                    @Html.HiddenFor(modelItem => item.ArtistId)
+                </td>
+                <td>
+                    @if (User.IsInRole("Artist"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-light" })
+                        <br /><br /><br />
+                        <button data-movie-id="@item.Id" class="btn btn-light js-delete">Delete</button>
+                    }
+                    @if (User.IsInRole("Client"))
+                    {
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-light" })
+                        <br /><br /><br />
+                        <input data-movie-id="@item.Id" type="button" value="Add to cart" class="btn btn-light kopce js-add"/>
+                        
+                    }
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div id="fullpage" onclick="this.style.display='none';"></div>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            var table = $("#productsTable").DataTable();
+            $("#productsTable .js-delete").on("click", function () {
+                var button = $(this); //zemi go kopceto
+                bootbox.confirm("Do you want to delete it?", function (result) {
+                    if (result == true) {
+                        $.ajax({
+                            url: "/Products/Delete/" + button.attr("data-movie-id"),
+                            method: "GET",
+                            success: function () {
+                                table.row(button.parents("tr")).remove().draw();
+                            },
+                            error: function (err) { //za debug ni treba
+                                console.log(err);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function () { $(".hovimg").click(function () { this.requestFullscreen() }) });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#productsTable .js-add").on("click", function () {
+                var button = $(this); // Get the clicked button
+                bootbox.confirm("Do you want to add it to the shopping cart", function (result) {
+                    if (result === true) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Products/AddToCart/" + button.attr("data-movie-id"), // Replace with the appropriate server-side endpoint
+                            data: {
+                                movieId: button.attr("data-movie-id")
+                            },
+                            success: function (response) {
+                                console.log("Item added to cart!");
+                                // Handle the success response from the server if needed
+                            },
+                            error: function (error) {
+                                console.log("Error adding item to cart: " + error);
+                                // Handle the error if needed
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+
+}

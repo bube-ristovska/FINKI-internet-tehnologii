@@ -1,0 +1,239 @@
+﻿@model TheNeighborhoodArtStore.Models.Product
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<style>
+    .kontainer {  
+        display: flex;
+        justify-content: space-between;
+        width: 900px;
+        height: 600px;
+        background: #fff;
+        margin: 20px;
+    }
+
+        .kontainer .imgBx {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            height: 100%;
+            background: #FFE79B;
+            transition: .3s linear;
+        }
+
+            .kontainer .imgBx:before {
+                content: 'DETAILS';
+                position: absolute;
+                margin-top: 30px;
+                top: -30px;
+                left: 24px;
+                color: #000;
+                opacity: 0.2;
+                font-size: 8em;
+                font-weight: 800;
+            }
+    body > div > div > div.imgBx > img {
+        transform: rotate(2deg);
+        margin-top: 140px;
+    }
+    .kontainer .imgBx img {
+        position: relative;
+        width: 700px;
+        transform: rotate(-30deg);
+        left: -50px;
+        transition: .9s linear;
+    }
+
+        .kontainer .details {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            box-sizing: border-box;
+            padding: 40px;
+        }
+
+            .kontainer .details h2 {
+                margin: 0;
+                padding: 0;
+                font-size: 2.4em;
+                line-height: 1em;
+                color: #444;
+            }
+
+                .kontainer .details h2 span {
+                    font-size: 0.4em;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    color: #999;
+                }
+
+            .kontainer .details p {
+                max-width: 85%;
+                margin-left: 15%;
+                color: #333;
+                font-size: 15px;
+                margin-bottom: 36px;
+            }
+
+            .kontainer .details h3 {
+                margin: 0;
+                padding: 0;
+                font-size: 2.5em;
+                color: #a2a2a2;
+                float: left;
+            }
+
+            .kontainer .details button {
+                background: #000;
+                color: #fff;
+                border: none;
+                outline: none;
+                padding: 15px 20px;
+                margin-top: 5px;
+                font-size: 16px;
+                letter-spacing: 1px;
+                text-transform: uppercase;
+                font-weight: 600;
+                border-radius: 40px;
+                float: right;
+            }
+
+    .product-colors span {
+        width: 26px;
+        height: 26px;
+        top: 7px;
+        margin-right: 12px;
+        left: 10px;
+        border-radius: 50%;
+        position: relative;
+        cursor: pointer;
+        display: inline-block;
+    }
+
+    .black {
+        background: #000;
+    }
+
+    .red {
+        background: #D5212E;
+    }
+
+    .orange {
+        background: #F18557;
+    }
+
+    .product-colors .active:after {
+        content: "";
+        width: 36px;
+        height: 36px;
+        border: 2px solid #000;
+        position: absolute;
+        border-radius: 50%;
+        box-sizing: border-box;
+        left: -5px;
+        top: -5px;
+    }
+
+
+    .kontainer .imgBx {
+        padding: 40px;
+        box-sizing: border-box;
+        width: 1900px;
+        height: auto;
+        text-align: center;
+        overflow: hidden;
+    }
+
+        .kontainer .imgBx img {
+            left: initial;
+            max-width: 100%;
+            transform: rotate(0deg);
+        }
+
+    .details {
+        width: 100% !important;
+        height: auto;
+        padding: 20px;
+    }
+
+    .kontainer .details p {
+        margin-left: 0;
+        max-width: 100%;
+    }
+
+    footer {
+        position: fixed;
+        right: 16px;
+        bottom: 12px;
+    }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+        }
+   
+</style>
+<div class="kontainer">
+    <div class="imgBx">
+        <img src="@Model.Image">
+    </div>
+    <div class="details">
+        <div class="content">
+            <h2>
+                @Html.DisplayFor(model => model.ProductName) <br>
+                <span>New Collection</span>
+            </h2>
+            <p>
+                @Html.DisplayFor(model => model.Description)
+            </p>
+            <p class="product-colors">
+                Available Colors: @Html.DisplayFor(model => model.Color)
+                <span class="black active" data-color-primary="@Model.Color" style="background-color:@Model.Color"></span>
+            </p>
+            <h3>Price: @Html.DisplayFor(model => model.Price)</h3> <br /><br />
+            <input data-movie-id="@Model.Id" type="button" value="Add to cart" class="btn btn-dark kopce js-add" /> <br />
+           
+            @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-light" })
+        </div>
+        <br />
+    </div>
+</div>
+
+
+
+@section Scripts{
+
+
+    <script>
+        $(document).ready(function () {
+            $(".js-add").on("click", function () {
+                var button = $(this); // Get the clicked button
+                bootbox.confirm("Do you want to add it to the shopping cart", function (result) {
+                    if (result === true) {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Products/AddToCart/" + button.attr("data-movie-id"), // Replace with the appropriate server-side endpoint
+                            data: {
+                                movieId: button.attr("data-movie-id")
+                            },
+                            success: function (response) {
+                                console.log("Item added to cart!");
+                                // Handle the success response from the server if needed
+                            },
+                            error: function (error) {
+                                console.log("Error adding item to cart: " + error);
+                                // Handle the error if needed
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

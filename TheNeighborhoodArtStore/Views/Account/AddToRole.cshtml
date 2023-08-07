@@ -1,0 +1,56 @@
+﻿@model TheNeighborhoodArtStore.Models.AddToRoleModel
+@{
+    ViewBag.Title = "AddToRole";
+}
+<style>
+    div.container.body-content {
+        margin: 0px;
+    }
+    div.other {
+        margin-left: -20px;
+        background-image: url(/Images/question.png);
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 824px;
+        width: 1928px;
+        position: relative;
+        background-position: center;
+        text-align: center;
+    }
+    div.forma {
+        width: 533px;
+        padding: 30px;
+        margin: auto;
+        margin-top: 156px;
+        display: inline-block;
+    }
+    .card {
+        /* Add shadows to create the "card" effect */
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        transition: 0.3s;
+    }
+
+        /* On mouse-over, add a deeper shadow */
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
+</style>
+<div class="other">
+    
+    <div class="forma card">
+        <h2>Are you an artist or a client? @Model.Email </h2>
+        @using (Html.BeginForm("AddUserToRole", "Account"))
+        {
+
+            <div class="form-group">
+                @Html.HiddenFor(m => m.Email)
+            </div>
+            <div class="form-group">
+                @{List<string> roles = new List<string>(); roles.Add("Artist"); roles.Add("Client");}
+                @Html.DropDownListFor(m => m.SelectedRole, new SelectList(roles), new { @class = "form-control" })
+            </div>
+            <br />
+            <button type="submit" class="btn btn-dark">Submit</button>
+        }
+    </div>
+</div>

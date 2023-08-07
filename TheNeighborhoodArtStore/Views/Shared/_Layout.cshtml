@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<style>
+
+</style>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark">
+        <div class="container">
+            <img src="~/Images/logo.jpg" style="max-width:90px" />
+            @Html.ActionLink("The Neighborhood Art", "Index", "Home", new { area = "" }, new { @class = "navbar-brand text-dark" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-center" style="margin-left:270px">
+                <ul class="navbar-nav flex-grow-1">
+
+                    @if (User.IsInRole("Client"))
+                    {
+                        <li>@Html.ActionLink("Discover products", "Index", "Products", new { area = "" }, new { @class = "nav-link text-dark" })</li>
+
+                        <li>@Html.ActionLink("Discover artists", "Index", "Artists", new { area = "" }, new { @class = "nav-link text-dark" })</li>
+                        <li>@Html.ActionLink("Shopping cart", "GetToCart", "Products", new { area = "" }, new { @class = "nav-link text-dark" })</li>
+
+                    }
+
+                    @if (User.IsInRole("Artist"))
+                    {
+                        <li>@Html.ActionLink("Products", "Index", "Products", new { area = "" }, new { @class = "nav-link text-dark" })</li>
+                        <li>@Html.ActionLink("Other artists", "Index", "Artists", new { area = "" }, new { @class = "nav-link text-dark" })</li>
+                    }
+
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <footer style="color:blue;">
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+   
+</body>
+</html>

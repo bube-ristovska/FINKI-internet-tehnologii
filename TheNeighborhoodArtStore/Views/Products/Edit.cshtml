@@ -1,0 +1,126 @@
+﻿@model TheNeighborhoodArtStore.Models.Product
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<style>
+    body > div > div.float-container > div:nth-child(2) > form > div{
+        margin-top:120px;
+    }
+    input[type=text] {
+        appearance: none;
+        border: none;
+        outline: none;
+        border-bottom: .2em solid #FFE79B;
+        background-color: rgba(255, 255, 204,0.3);
+        border-radius: .2em .2em 0 0;
+        padding: .4em;
+        color: black;
+    }
+
+    .float-container {
+        border: 3px solid none;
+        padding: 20px;
+    }
+
+    .float-child {
+        width: 50%;
+        float: left;
+        padding: 20px;
+        border: 2px solid none;
+        
+    }
+    body > div > div.float-container > div:nth-child(1){
+        text-align:center;
+    }
+    .imgs {
+        width: 500px;
+        border-radius: 300px;
+        box-shadow: 0 30px 26px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19) !important
+    }
+</style>
+
+
+<div class="float-container">
+
+    <div class="float-child">
+        <h2>Edit product</h2><h4>@Model.ProductName</h4>
+        <img src="@Model.Image" class="imgs"/>
+    </div>
+
+    <div class="float-child">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.Id)
+
+            <div class="form-group">
+                Name of product
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                Image link
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Image, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Image, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Color, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Color, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Color, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br /><br />
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-dark" />
+                </div>
+            </div>
+            <br />
+            <div>
+                @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-light" })
+            </div>
+            <hr />
+        </div>
+        }
+        <br />
+        
+    </div>
+
+</div>
+
+<div class="center">
+   
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,105 @@
+﻿ @{
+    ViewBag.Title = "Home Page";
+}
+
+<style>
+    div.container.body-content {
+        margin: 0px;
+    }
+
+    div.cover-photo {
+        background-image: url("/Images/cover.jpg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 900px;
+        width: 1910px;
+        position: relative;
+        background-position: center;
+        margin-left: -20px;
+        margin-right: 20px;
+        text-align: center;
+        font-size: 90px;
+        filter: blur(7px);
+    }
+
+        div.cover-photo:hover {
+            filter: none;
+        }
+
+    body > div > div > p {
+        text-align: center;
+        font-size: 70px;
+        filter: none;
+        text-shadow: -3px 3px 0 pink;
+        background-color: none;
+        margin-top: 190px;
+        position: absolute;
+        z-index: 10;
+    }
+
+    div.whyus-photo {
+        background-image: url("/Images/whyus.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 1060px;
+        width: 1911px;
+        position: relative;
+        background-position: center;
+        margin-left: -20px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    div.aboutus-photo {
+        background-image: url("/Images/aboutus.png");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 1000px;
+        width: 1911px;
+        position: relative;
+        background-position: center;
+        margin-left: -20px;
+        margin-right: 20px;
+        text-align: center;
+    }
+
+    body > div > div {
+        width: 100vh;
+    }
+
+    .kopce {
+        font-size: 22px;
+        margin-top: 567px;
+    }
+</style>
+
+<div>
+    <p>Are you ready to discover the best art made from local artists?</p>
+</div>
+
+<div class="cover-photo">
+</div>
+
+<div class="whyus-photo">
+
+</div>
+<div class="aboutus-photo">
+
+    <div class="align-content-center">
+        @{
+            if (User.IsInRole("Artist") || User.IsInRole("Client"))
+            {
+                @Html.ActionLink("Search artpieces", "Index", "Products", null, new { @class = "btn btn-light kopce" })
+            }
+        }
+
+    </div>
+</div>
+
+
+
+
+
+
+<script src="https://kit.fontawesome.com/your-fontawesome-kit.js"></script>
+
